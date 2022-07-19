@@ -23,8 +23,18 @@ const getSingleAuthor = async (authorId: string) => {
   }
 };
 
+const deleteAuthor = async (authorId: string) => {
+  const foundAuthor = await Author.findById(authorId);
+  if (foundAuthor) {
+    return await Author.findByIdAndDelete(authorId);
+  } else {
+    throw new CustomError(404, "Author not found");
+  }
+};
+
 export default {
   createAuthor,
   getAllAuthors,
-  getSingleAuthor
+  getSingleAuthor,
+  deleteAuthor
 };

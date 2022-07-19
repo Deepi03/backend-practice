@@ -40,19 +40,29 @@ const createAuthor = async(req: Request, res: Response,next: NextFunction) => {
     }
 };
 
-const singleAuthor = async(req: Request, res: Response) => {
+const getSingleAuthor = async(req: Request, res: Response) => {
   const authorId = req.params.authorId;
   const foundAuthor = await authorService.getSingleAuthor(authorId) 
   return res.json(foundAuthor)
 };
 
-const getBooksByAuthor = (req: Request, res: Response) => {
+const deleteAuthor = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const  authorId  = req.params.authorId
+        await authorService.deleteAuthor(authorId)
+        return res.status(204).send('Author get deleted')
+    } catch (e) {
+        return next(e)
+    }
+}
+
+/* const getBooksByAuthor = (req: Request, res: Response) => {
   const authorId = req.params.authorId;
   return res.send({
     authorId: authorId,
     message: `Books of author with  ${authorId}`,
     status: 200
   });
-};
+}; */
 
-export default { getAllAuthors, singleAuthor, getBooksByAuthor, createAuthor };
+export default { getAllAuthors, getSingleAuthor, createAuthor,deleteAuthor };
