@@ -19,8 +19,8 @@ authorRoute.delete("/", (req: Request, res: Response) => {
   });
 });
 
-/* authorRoute.get("/:authorId", checkAuthorId, singleAuthor);
+authorRoute.get("/:authorId", authorsController.singleAuthor);
 
-authorRoute.get("/:authorId/books", displayBooksOfAnAuthor, getBooksByAuthor); */
+/* authorRoute.get("/:authorId/books", displayBooksOfAnAuthor, getBooksByAuthor); */
 
 export default authorRoute;

@@ -40,9 +40,10 @@ const createAuthor = async(req: Request, res: Response,next: NextFunction) => {
     }
 };
 
-const singleAuthor = (req: Request, res: Response) => {
+const singleAuthor = async(req: Request, res: Response) => {
   const authorId = req.params.authorId;
-  return res.send(`Author id ${authorId} endpoint`);
+  const foundAuthor = await authorService.getSingleAuthor(authorId) 
+  return res.json(foundAuthor)
 };
 
 const getBooksByAuthor = (req: Request, res: Response) => {
