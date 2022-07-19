@@ -8,23 +8,16 @@ import uuid from "uuid4";
 
 import Author  from '../models/Authors'
 import  {CustomError}  from "../types/customError";
+import authorService from "../services/authorService";
 
 
-const getAllAuthors = (req: Request, res: Response) => {
-     return Author.find();
+const getAllAuthors = async(req: Request, res: Response,next:NextFunction) => {
+     const authors = await authorService.getAllAuthors()
+     return res.json(authors)
 };
 
 const createAuthor = async(req: Request, res: Response,next: NextFunction) => {
- /*  const name = req.file?.filename
-  const avatar = `http://localhost:8080/authorImages/${name}`;
-  const { fullname } = req.body;
-  const author = new Author({
-    fullname,
-    avatar
-  })
-  const newAuthor = await author.save() //author is a document in author collection, save it to db
  
-  return res.status(201).json(newAuthor); */
   try{
     if(req.file?.path){
       const dataBuffer = fs.readFileSync(req.file?.path)
@@ -36,7 +29,7 @@ const createAuthor = async(req: Request, res: Response,next: NextFunction) => {
           fullname,
           avatar
       })
-      const newAuthor = await author.save()
+      const newAuthor = await authorService.createAuthor(author)
       return res.status(201).json(newAuthor);
       } else {
             throw new CustomError(404, 'File acannot be empty')
@@ -61,4 +54,4 @@ const getBooksByAuthor = (req: Request, res: Response) => {
   });
 };
 
-export { getAllAuthors, singleAuthor, getBooksByAuthor, createAuthor };
+export default { getAllAuthors, singleAuthor, getBooksByAuthor, createAuthor };

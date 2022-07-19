@@ -5,7 +5,7 @@ export interface AuthorDocument extends Document {
   avatar: string;
 }
 
-const authorSchema = new Schema({
+const authorSchema = new Schema<AuthorDocument>({
   fullname: {
     type: String,
     required: true
