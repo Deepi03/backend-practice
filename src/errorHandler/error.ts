@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
-import { CustomError } from "customError";
+import { CustomError } from "../types/customError";
 
 export const customErrorHandler = (
   err: Error | CustomError,
@@ -11,7 +11,7 @@ export const customErrorHandler = (
   if (err instanceof CustomError) {
     return res.send({
       status: err.status,
-      message: err.message,
+      message: err.message
     });
   } else {
     return res.send(err.message);

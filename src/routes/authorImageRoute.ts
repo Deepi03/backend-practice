@@ -1,10 +1,8 @@
 import { Router, Request, Response } from "express";
 import path from "path";
+import imageController from "../controller/imageController";
 
 const authorImageRoute = Router();
-authorImageRoute.get("/:imageName", (req: Request, res: Response) => {
-  const imageName = req.params.imageName;
-  res.sendFile(path.join(__dirname, `../../public/images/${imageName}`));
-});
+authorImageRoute.get("/:imageId", imageController.getSingleImage);
 
 export default authorImageRoute;
