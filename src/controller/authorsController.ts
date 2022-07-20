@@ -16,17 +16,23 @@ const getAllAuthors = async(req: Request, res: Response,next:NextFunction) => {
      return res.json(authors)
 };
 
+const getSingleAuthor = async(req: Request, res: Response) => {
+  const authorId = req.params.authorId;
+  const foundAuthor = await authorService.getSingleAuthor(authorId) 
+  return res.json(foundAuthor)
+};
+
 const createAuthor = async(req: Request, res: Response,next: NextFunction) => {
- 
   try{
     if(req.file?.path){
       const dataBuffer = fs.readFileSync(req.file?.path)
       const data = await sharp(dataBuffer).resize(200,200).toBuffer()
       const savedImage = await imageService.createImage(data)
       const avatar = `http://localhost:8080/authorImages/${savedImage._id}`
-      const { fullname } = req.body;
+      const { firstname,lastname } = req.body;
       const author = new Author({
-          fullname,
+          firstname,
+          lastname,
           avatar
       })
       const newAuthor = await authorService.createAuthor(author)
@@ -40,11 +46,34 @@ const createAuthor = async(req: Request, res: Response,next: NextFunction) => {
     }
 };
 
-const getSingleAuthor = async(req: Request, res: Response) => {
-  const authorId = req.params.authorId;
-  const foundAuthor = await authorService.getSingleAuthor(authorId) 
-  return res.json(foundAuthor)
-};
+const updateAuthor = async(req:Request,res:Response,next:NextFunction) =>{
+   try{
+    const  authorId  = req.params.authorId
+    if(req.file?.path){
+      const dataBuffer = fs.readFileSync(req.file?.path)
+      const data = await sharp(dataBuffer).resize(200,200).toBuffer()
+      const savedImage = await imageService.createImage(data)
+      const avatar = `http://localhost:8080/authorImages/${savedImage._id}`
+      const { firstname,lastname } = req.body;
+      const author = new Author(
+        {
+           _id : authorId,
+          firstname : firstname,
+          lastname:lastname,
+          avatar: avatar
+        }
+      );
+     
+      const updatedAuthor = await authorService.updateAuthor(author)
+      console.log(updatedAuthor)
+      return res.status(201).json(updatedAuthor);
+    } 
+  } catch(e){
+     return next(e)
+      }
+}
+
+
 
 const deleteAuthor = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -65,4 +94,4 @@ const deleteAuthor = async (req: Request, res: Response, next: NextFunction) => 
   });
 }; */
 
-export default { getAllAuthors, getSingleAuthor, createAuthor,deleteAuthor };
+export default { getAllAuthors, getSingleAuthor, createAuthor,updateAuthor,deleteAuthor };

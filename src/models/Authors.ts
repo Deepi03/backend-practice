@@ -1,12 +1,17 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface AuthorDocument extends Document {
-  fullname: string;
+  firstname: string;
+  lastname: string;
   avatar: string;
 }
 
 const authorSchema = new Schema<AuthorDocument>({
-  fullname: {
+  firstname: {
+    type: String,
+    required: true
+  },
+  lastname: {
     type: String,
     required: true
   },
